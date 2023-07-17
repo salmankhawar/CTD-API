@@ -54,7 +54,7 @@ app.post('/', async (req,res) => {
   res.send("Success")
 })
 
-// patch route for updated quantity
+// patch route for updated quantity send email if the count is zero
 app.patch('/:id', async (req, res) => {
   let product = await Products.findByIdAndUpdate(req.params.id, {
     count: req.body.count} ,
