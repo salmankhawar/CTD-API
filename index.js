@@ -65,10 +65,10 @@ app.patch('/:id', async (req, res) => {
   sgMail.send({
   to: process.env.MY_EMAIL, 
   from: process.env.SENDER_EMAIL,
-  subject: `Your product ${req.body.title} is out of stock`,
+  subject: `Your product ${product.title} is out of stock`,
   text: 'please consider restocking it',
-  html: `<strong>It is to inform you that your product ${req.body.title} is out of stock, please consider restocking it.
-  It was being sold at ${req.body.price} ${req.body.currency} per  ${req.body.uom}</strong>`
+  html: `<strong>It is to inform you that your product ${product.title} is out of stock, please consider restocking it.
+  It was being sold at ${product.price} ${product.currency} per  ${product.uom}</strong>`
   }
 ).then(() => {
   res.send('Email sent')
