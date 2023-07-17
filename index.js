@@ -32,8 +32,11 @@ mongoose.connect(
 
 // get route for all products
 app.get('/', async (req, res) => {
+  try {
   let products = await Products.find({})
-  res.send(products)
+  res.send(products) } catch(err) {
+    throw(err)
+  } 
   })
 
 // create route for new product
