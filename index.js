@@ -61,12 +61,7 @@ app.patch('/:id', async (req, res) => {
     {
     new: true
   })
-  res.send(product)
-})
-
-// email route for zero stock products
-
-app.post('/email', async (req, res) => {
+  if (product.count === 0) {
   sgMail.send({
   to: process.env.MY_EMAIL, 
   from: process.env.SENDER_EMAIL,
@@ -82,7 +77,10 @@ app.post('/email', async (req, res) => {
 .catch((error) => {
   console.error(error)
 })
+}
 })
+
+
 
   // keep the server open
   app.listen(4000, () => {
