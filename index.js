@@ -67,7 +67,7 @@ app.patch('/:id', async (req, res) => {
 // email route for zero stock products
 
 app.post('/email', async (req, res) => {
-  await sgMail.send({
+  sgMail.send({
   to: process.env.MY_EMAIL, 
   from: process.env.SENDER_EMAIL,
   subject: `Your product ${req.body.title} is out of stock`,
