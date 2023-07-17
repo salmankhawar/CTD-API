@@ -10,6 +10,9 @@ const mongoose = require('mongoose')
 const Products = require('./model-products')
 // import body parser 
 const bodyParser = require('body-parser')
+// import sgMail
+const sgMail = require('@sendgrid/mail')
+
 
 
 // run the express function
@@ -21,6 +24,12 @@ app.use(cors())
 // run the body parser function
 app.use(bodyParser.json())
 
+// setup sgMail API Key
+sgMail.setApiKey(
+  process.env.SENDGRID_API_KEY, 
+    console.log('Connected to SgMail')
+    )
+
 // databases
 mongoose.connect(
   process.env.MONGODB_URL,
@@ -28,7 +37,7 @@ mongoose.connect(
 )
 
 
-// create routes
+// routes
 
 // get route for all products
 app.get('/', async (req, res) => {
@@ -54,7 +63,26 @@ app.patch('/:id', async (req, res) => {
   })
   res.send(product)
 })
-  
+
+// email route for zero stock products
+
+app.post('/email', async (req, res) => {
+  sgMail.send({
+  to: process.env.MY_EMAIL, 
+  from: process.env.SENDER_EMAIL,
+  subject: `Your product ${req.body.title} is out of stock`,
+  text: 'please consider restocking it',
+  html: `<strong>It is to inform you that your product ${req.body.title} is out of stock, please consider restocking it.
+  It was being sold at ${req.body.price} ${req.body.currency} per  ${req.body.uom}</strong>`
+  }
+).then(() => {
+  res.send('Email sent')
+})
+.catch((error) => {
+  console.error(error)
+})
+})
+
   // keep the server open
   app.listen(4000, () => {
     console.log('Server is Listening.')
