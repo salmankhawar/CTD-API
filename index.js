@@ -77,6 +77,7 @@ app.post('/email', async (req, res) => {
   }
 ).then(() => {
   res.send('Email sent')
+  console.log('Email sent')
 })
 .catch((error) => {
   console.error(error)
