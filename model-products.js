@@ -26,6 +26,7 @@ let Products = mongoose.model('products', {
     currency: {
         type: String,
         required: true,
+        enum: ['USD', 'GBP']
       }
     
   })
