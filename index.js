@@ -50,17 +50,23 @@ app.get('/', async (req, res) => {
 
 // create route for new product
 app.post('/', async (req,res) => {
-  let product = await Products.create(req.body)
-  res.send("Success")
+  try {let product = await Products.create(req.body)
+  res.send("Product Sucessfully Created!")} catch(err) {
+   console.log(err) 
+  }
 })
 
 // patch route for updated quantity send email if the count is zero
 app.patch('/:id', async (req, res) => {
+  let dbProduct = await Products.findById(req.params.id)
+  try { 
+    if (dbProduct.count != req.body.count) {
   let product = await Products.findByIdAndUpdate(req.params.id, {
     count: req.body.count} ,
     {
     new: true
-  })
+  }) 
+  res.send('Quantity Updated!')
   if (product.count === 0) {
   sgMail.send({
   to: process.env.MY_EMAIL, 
@@ -71,13 +77,17 @@ app.patch('/:id', async (req, res) => {
   It was being sold at ${product.price} ${product.currency} per  ${product.uom}</strong>`
   }
 ).then(() => {
-  res.send('Email sent')
   console.log('Email sent')
 })
 .catch((error) => {
   console.error(error)
 })
 }
+} else {
+res.send('Quantity Already Exists!')}
+  } catch(err) {
+    console.log(err)
+  }
 })
 
 
