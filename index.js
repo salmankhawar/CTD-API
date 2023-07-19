@@ -77,7 +77,7 @@ app.patch('/:id', async (req, res) => {
   It was being sold at ${product.price} ${product.currency} per  ${product.uom}</strong>`
   }
 ).then(() => {
-  console.log('Email sent')
+  console.log('Email sent!')
 })
 .catch((error) => {
   console.error(error)
